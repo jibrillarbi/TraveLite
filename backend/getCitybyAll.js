@@ -44,6 +44,7 @@ async function getCitybyAll(temp=null, weather=null, date=null)
           weather: weather,
           datee: date
         })
-    console.log(data)
+    return data;
 }
+
 export default getCitybyAll;
