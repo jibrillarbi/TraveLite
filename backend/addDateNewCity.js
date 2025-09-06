@@ -1,15 +1,16 @@
 import { fetchWeatherData, fetchWeatherDataFuture } from './updateWeather.js';
-
+import { supabase } from "./supabase-client.js";
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-
+//function that adds weather data for the next 300 days for a given city 
 async function addFutureWeatherDate(city) {
     const date = new Date();
     date.setDate(date.getDate() + 1);
     const formattedDate = date.toISOString().split('T')[0];
     console.log("Formatted date:", formattedDate);
 
+    //adds for 14 days 
     for (let i = 0; i < 14; i++) {
         const futureDate = new Date(date);
         futureDate.setDate(futureDate.getDate() + i);
@@ -25,7 +26,7 @@ async function addFutureWeatherDate(city) {
         
         await sleep(2000); 
     }
-    
+    //adds for 300 days
     for (let i = 15; i < 300; i++) {
         const futureDate = new Date(date);
         futureDate.setDate(futureDate.getDate() + i);
@@ -45,6 +46,25 @@ async function addFutureWeatherDate(city) {
     return true;
 }
 
-addFutureWeatherDate("London");
+//a function that adds weather data for all the supabase cities for the next 300 days
+async function addWeatherDataAllCities() {
+    const {data, error}= await supabase.from('cities')
+        .select('city_name');
+    
+    data.map(async (city) => {
+        const cityName = city.city_name;
+        try
+        {
+            await addFutureWeatherDate(cityName);
+        } catch (error) {
+            console.error(`Error adding weather data for ${cityName}:`, error);
+        }
+        await sleep(1000);
+    });
+    console.log(data);
+    return ;
+}
+addWeatherDataAllCities();
+export default addFutureWeatherDate;
 
 

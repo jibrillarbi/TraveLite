@@ -8,7 +8,6 @@ async function addCity(city) {
         return;
     }
     updatePosition(city);
-
-    
 }
+
 export default addCity;
