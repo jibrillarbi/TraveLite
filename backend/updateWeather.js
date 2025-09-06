@@ -1,4 +1,5 @@
 import { supabase } from './supabase-client.js';
+import fetch from 'node-fetch';
 function CodeToWeather(code){
     if ([1000].includes(code)) {
        return "Sunny";
@@ -25,6 +26,8 @@ function CodeToWeather(code){
        return "Unknown";
     }    
 }
+
+
 async function fetchWeatherDataFuture(city,date) {
     //get weather data  |||| date in yyyy-mm-dd format
     //dt parameter should be in yyyy-MM-dd format and between 14 days 
@@ -34,13 +37,11 @@ async function fetchWeatherDataFuture(city,date) {
     .catch(error => {
         console.error("Error fetching data:", error);
     });
-
-    console.log ("Full Weather data for", city, ":", data); 
     let weather_data = data['forecast']['forecastday'][0]['day'];
-    console.log("Weather data for", city, ":", weather_data);
     let weather= CodeToWeather(weather_data['condition']['code']);
     let temp= weather_data['avgtemp_c'].toFixed(0); 
     addWeatherData(city,date, temp, weather,1);
+    console.log(city,date, temp,weather,1);
     return;
     }
 
@@ -51,12 +52,13 @@ async function fetchWeatherData(city,date)
     .catch(error => {
         console.error("Error fetching data:", error);
     });
-    console.log ("Full Weather data for", city, ":", data);
+    
     console.log('\n\n\n');
     data=data['forecast']['forecastday'][0]['day'];
     let temp= data['avgtemp_c'].toFixed(0);
     let weather= CodeToWeather(data['condition']['code']);
     addWeatherData(city,date, temp,weather,0);
+    console.log(city,date, temp,weather,0);
     return{
         temp: temp,
         weather: weather,
@@ -80,6 +82,10 @@ async function addWeatherData(city, date, temp, weather,type) {
     }
 }
 
-fetchWeatherDataFuture('London','2025-09-01'); 
-fetchWeatherData('London','2025-08-19');
-export default {fetchWeatherDataFuture,fetchWeatherData};
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+//fetchWeatherDataFuture('London','2025-09-01'); 
+//fetchWeatherData('London','2025-08-19');
+export {fetchWeatherDataFuture,fetchWeatherData};
