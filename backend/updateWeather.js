@@ -1,5 +1,7 @@
 import { supabase } from './supabase-client.js';
 import fetch from 'node-fetch';
+import dotenv from 'dotenv';
+dotenv.config();
 function CodeToWeather(code){
     if ([1000].includes(code)) {
        return "Sunny";
@@ -32,11 +34,8 @@ async function fetchWeatherDataFuture(city,date) {
     //get weather data  |||| date in yyyy-mm-dd format
     //dt parameter should be in yyyy-MM-dd format and between 14 days 
     // and 300 days from today in the future.
-    let data = await fetch(`http://api.weatherapi.com/v1/future.json?key=5a7afa91da3d468db2e102721251608&q=${city}&dt=${date}`)
+    let data = await fetch(`http://api.weatherapi.com/v1/future.json?key=${process.env.WEATHER_API}&q=${city}&dt=${date}`)
     .then(response => response.json())
-    .catch(error => {
-        console.error("Error fetching data:", error);
-    });
     let weather_data = data['forecast']['forecastday'][0]['day'];
     let weather= CodeToWeather(weather_data['condition']['code']);
     let temp= weather_data['avgtemp_c'].toFixed(0); 
@@ -47,11 +46,8 @@ async function fetchWeatherDataFuture(city,date) {
 
 async function fetchWeatherData(city,date)
 {
-    let data = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=5a7afa91da3d468db2e102721251608&q=${city}&dt=${date}`)
+    let data = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHER_API}&q=${city}&dt=${date}`)
     .then(response => response.json())
-    .catch(error => {
-        console.error("Error fetching data:", error);
-    });
     
     console.log('\n\n\n');
     data=data['forecast']['forecastday'][0]['day'];

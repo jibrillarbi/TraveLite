@@ -1,8 +1,11 @@
 import { supabase } from './supabase-client.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
 async function updatePosition(city) {
   let lon;
   let lat;
-  const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=b47f4b528fb134aba9834730f88dd890`);
+  const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${process.env.OPEN_WEATHER_API}`);
   const json = await response.json();
   lat = json[0]["lat"];
   lon = json[0]["lon"];
