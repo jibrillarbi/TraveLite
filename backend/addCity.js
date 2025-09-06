@@ -8,7 +8,7 @@ async function addCity(city) {
         return;
     }
     updatePosition(city);
+
     
 }
-
-addCity("Tokyo");
+export default addCity;
