@@ -26,3 +26,6 @@ dist-ssr
 # env etc 
  *.env
  supabase-clent.js
+.env
+backend/supabase-client.js
+backend/supabase-client.js
