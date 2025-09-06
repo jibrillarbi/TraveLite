@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router-dom';
 const FormCard = () => {
   const navigate = useNavigate(); 
   const [inputs, setInputs] = useState({
-    temp: 19,
+    temp: null,
     weather: null,
     date: null,
-    cont: null 
+    cont: null ,
+    rdate: null
   });
   const [results, setResults] = useState([]);
 
@@ -38,15 +39,14 @@ const FormCard = () => {
   return (
     <div >
       <form onSubmit={handleSubmit}>
-        <div className='grid grid-cols-6 text-black gap-2 p-2'>
+        <div className='grid grid-cols-6 text-black gap-2 p-6  rounded-lg'>
 
         <div className='bg-white p-2'>
             <p> Temperature: </p>
             <input
                 type="number"
                 name="temp"
-                value={inputs.temp || '19'}
-                required
+                value={inputs.temp || ''}
                 placeholder="19"
                 min="1"
                 max="40"
@@ -87,12 +87,11 @@ const FormCard = () => {
            <div className='bg-white p-2'>
                 <p>Return Date</p>
                 <input
-                    type="date"
+                    type="rdate"
                     placeholder="19"
-                    min=""
-                    max="40"
                     title="Must be between be 1 to 10"
                     className='input validator bg-white w-full'
+                    onChange={handleChange}
                 />
             </div>
 

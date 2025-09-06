@@ -27,7 +27,7 @@ const WeatherCard = ({cities}) => {
             </div>
 
             <div className="text-center">
-              <p className="text-3xl font-bold">{city.temp}°C</p>
+              <p className="text-3xl font-bold">{city.avg_temp}°C</p>
               <p className="text-sm opacity-90">{city.weather_cond}</p>
             </div>
 

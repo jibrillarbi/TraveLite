@@ -22,27 +22,59 @@ async function getCitybyWeather(weather)
 }
 
 /* SQL query 
-CREATE OR REPLACE FUNCTION get_city(tempe int, weather text, datee date)
-RETURNS SETOF weather_city
+CREATE OR REPLACE FUNCTION get_city(
+    tempe   int,
+    weather text,
+    ddate   date,
+    rdate   date
+)
+RETURNS TABLE(
+    id          bigint,
+    city_name   text,
+    avg_temp    numeric,
+    weather_cond text
+)
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    RETURN QUERY 
-    SELECT DISTINCT ON (city_name) * FROM weather_city
-    WHERE 
-        (tempe IS NULL OR temp = tempe)
-    AND (weather IS NULL OR weather_cond = weather)
-    AND (datee IS NULL OR weather_date = datee);
+    RETURN QUERY
+    SELECT
+        MIN(wc.id)               AS id,
+        wc.city_name,
+        ROUND(AVG(wc.temp),0)             AS avg_temp,
+        MIN(wc.weather_cond)     AS weather_cond
+    FROM public.weather_city wc
+    WHERE (tempe IS NULL   OR (wc.temp >tempe-5 and wc.temp<tempe+5))
+      AND (weather IS NULL OR wc.weather_cond = weather)
+      AND (
+            (ddate IS NOT NULL AND rdate IS NULL
+               AND wc.weather_date::date = ddate)
+         OR (ddate IS NOT NULL AND rdate IS NOT NULL
+               AND wc.weather_date::date BETWEEN ddate AND rdate)
+         OR (ddate IS NULL  AND rdate IS NULL)
+          )
+
+    GROUP BY wc.city_name
+    ORDER BY 
+        CASE 
+            WHEN tempe IS NULL THEN 0 
+            ELSE ABS(AVG(wc.temp) - tempe) 
+
+        END
+        ASC,
+        wc.city_name;
+        
 END;
 $$;
 
 */
-async function getCitybyAll(temp=null, weather=null, date=null)
+async function getCitybyAll(temp=null, weather=null, date=null, rdate=null)
 {
     const { data, error } = await supabase.rpc('get_city', 
         { tempe: temp,
           weather: weather,
-          datee: date
+          ddate: date,
+          rdate: rdate
         })
     return data;
 }
