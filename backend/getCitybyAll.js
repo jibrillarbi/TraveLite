@@ -1,4 +1,6 @@
 import {supabase} from "./supabase-client.js";
+//these are used for the search function 
+
 
 async function getCitybyName(city)
 {
