@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import getCitybyAll from '../../backend/getCitybyAll';
 import { useNavigate } from 'react-router-dom';
 
 const FormCard = () => {
@@ -24,15 +23,25 @@ const FormCard = () => {
 
   const handleSubmit = async (e) => {  
     e.preventDefault();
-    console.log("Form submitted with inputs:", inputs);
     try {
-      const response = await getCitybyAll(inputs.temp, inputs.weather, inputs.date);
-      console.log("API Response:", response);
-      setResults(response || []);
-      navigate('/results', { state: { results: response } });
+      const response = await fetch('http://localhost:3002/api/search-cities', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          temp: inputs.temp,
+          weather: inputs.weather,
+          date: inputs.date,
+          returnDate: inputs.rdate
+        })
+      });
+      
+      const results = await response.json();
+      console.log("Results from API:", results);
+      navigate('/results', { state: { results } });
     } catch(error) {
       console.error("Error:", error);
-      setResults([]);
     }
   }
 
@@ -77,6 +86,7 @@ const FormCard = () => {
                 <p> Depart Date</p>
                 <input
                     type="date"
+                    name="date"
                     placeholder="19"
                     title="Must be between be 1 to 10"
                     className='input validator bg-white w-full'
@@ -87,7 +97,8 @@ const FormCard = () => {
            <div className='bg-white p-2'>
                 <p>Return Date</p>
                 <input
-                    type="rdate"
+                    type="date"
+                    name="rdate"
                     placeholder="19"
                     title="Must be between be 1 to 10"
                     className='input validator bg-white w-full'
