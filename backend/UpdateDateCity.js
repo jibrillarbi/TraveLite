@@ -13,9 +13,6 @@ async function updateDateCity() {
 
     const Form_weeks = weeks.toISOString().split('T')[0];
     const Form_year = year.toISOString().split('T')[0];  
-    console.log("Today:", today);
-    console.log("Weeks:", Form_weeks);
-    console.log("Year:", Form_year);
     data.map(async (city) => {
         const cityName = city.city_name;
         fetchWeatherData(cityName, Form_weeks);
