@@ -1,7 +1,13 @@
 import { Plane } from "lucide-react"
 import FormCard from "./FormCard";
+import { useNavigate } from "react-router-dom"
 
 function Wrapper({ children }) {
+  const navigate = useNavigate();
+
+  const handleHomeClick = () => {
+    navigate('/');
+  };
   return (
     
     <div className="min-h-screen ">
@@ -10,7 +16,7 @@ function Wrapper({ children }) {
             <div className="page-container flex flex-col p-4 box-border ">
                 <header className="flex flex-col sm:flex-row justify-between items-center p-4">
                     <div className="text-center sm:text-left mb-4 sm:mb-0">
-                        <h1 className="text-3xl font-bold text-white flex items-center justify-center sm:justify-start">
+                        <h1 className="text-3xl font-bold text-white flex items-center justify-center sm:justify-start" onClick={handleHomeClick}>
                             WeatherScanner
                             <br />
                             <Plane />
