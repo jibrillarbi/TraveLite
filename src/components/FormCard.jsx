@@ -6,17 +6,12 @@ const FormCard = () => {
   const today = new Date().toISOString().split('T')[0];
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1)
-  const tomostr = tomorrow.toISOString().split('T')[0];
-
-  const apiUrl = process.env.NODE_ENV === 'production' 
-    ? '/api/search-cities' 
-    : 'http://localhost:3002/api/search-cities'; 
-
+  const tomostr=tomorrow.toISOString().split('T')[0];
   const [inputs, setInputs] = useState({
     temp: null,
     weather: null,
     date: today,
-    cont: null,
+    cont: null ,
     rdate: null
   });
   const [results, setResults] = useState([]);
@@ -50,7 +45,7 @@ const FormCard = () => {
     }
 
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch('http://localhost:3002/api/search-cities', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,27 +54,21 @@ const FormCard = () => {
           temp: inputs.temp,
           weather: inputs.weather,
           date: inputs.date,
-          returnDate: inputs.rdate,
-          continent: inputs.cont
+          returnDate: inputs.rdate
         })
       });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
       
       const results = await response.json();
       console.log("Results from API:", results);
       navigate('/results', { state: { results } });
     } catch(error) {
       console.error("Error:", error);
-      alert('Failed to fetch results. Please try again.');
     }
   }
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>  {/* Remove noValidate */}
+      <form onSubmit={handleSubmit}> 
         <div className='grid grid-cols-2 md:grid-cols-6 text-black gap-1 p-6 rounded-lg'>
 
           <div className='grow col-span-2 rounded-t-2xl md:col-span-1 md:rounded-l-2xl md:rounded-none bg-white p-2'>
@@ -94,7 +83,7 @@ const FormCard = () => {
               title="Must be between -10 to 40"
               className='input validator bg-white w-full'
               onChange={handleChange}
-              onInvalid={(e) => e.preventDefault()}  // Prevents popup message
+              onInvalid={(e) => e.preventDefault()}
             />
 
           </div>
@@ -126,7 +115,7 @@ const FormCard = () => {
                     onChange={handleChange}
                     required
                     min={today}
-                    onInvalid={(e) => e.preventDefault()}  // Prevents popup message
+                    onInvalid={(e) => e.preventDefault()} 
                   />
               </div>
 
@@ -140,7 +129,7 @@ const FormCard = () => {
                     className='input validator bg-white w-full'
                     onChange={handleChange}
                     min={inputs.date || tomostr}
-                    onInvalid={(e) => e.preventDefault()}  // Prevents popup message
+                    onInvalid={(e) => e.preventDefault()} 
                   />
               </div>
 
