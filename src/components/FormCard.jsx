@@ -6,12 +6,17 @@ const FormCard = () => {
   const today = new Date().toISOString().split('T')[0];
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1)
-  const tomostr=tomorrow.toISOString().split('T')[0];
+  const tomostr = tomorrow.toISOString().split('T')[0];
+
+  const apiUrl = process.env.NODE_ENV === 'production' 
+    ? '/api/search-cities' 
+    : 'http://localhost:3002/api/search-cities'; 
+
   const [inputs, setInputs] = useState({
     temp: null,
     weather: null,
     date: today,
-    cont: null ,
+    cont: null,
     rdate: null
   });
   const [results, setResults] = useState([]);
@@ -45,7 +50,7 @@ const FormCard = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3002/api/search-cities', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,15 +59,21 @@ const FormCard = () => {
           temp: inputs.temp,
           weather: inputs.weather,
           date: inputs.date,
-          returnDate: inputs.rdate
+          returnDate: inputs.rdate,
+          continent: inputs.cont
         })
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       
       const results = await response.json();
       console.log("Results from API:", results);
       navigate('/results', { state: { results } });
     } catch(error) {
       console.error("Error:", error);
+      alert('Failed to fetch results. Please try again.');
     }
   }
 
