@@ -48,9 +48,9 @@ const FormCard = () => {
   return (
     <div >
       <form onSubmit={handleSubmit}>
-        <div className='grid grid-cols-6 text-black gap-2 p-6  rounded-lg'>
+        <div className='grid grid-cols-2 md:grid-cols-6 text-black gap-1 p-6  rounded-lg'>
 
-        <div className='bg-white p-2'>
+        <div className='grow col-span-2 rounded-t-2xl md:col-span-1 md:rounded-l-2xl md:rounded-none  bg-white p-2'>
             <p> Temperature: </p>
             <input
                 type="number"
@@ -66,7 +66,7 @@ const FormCard = () => {
 
         </div>
         
-          <label className='bg-white p-2'>
+          <label className='col-span-2 md:col-span-1 bg-white p-2'>
                 Weather:
                 <select 
                     name="weather" 
@@ -106,7 +106,7 @@ const FormCard = () => {
                 />
             </div>
 
-            <label className='bg-white p-2'>
+            <label className='col-span-2 rounded-b-2xl md:col-span-1 md:rounded-r-2xl md:rounded-none bg-white p-2'>
                 Continent:
                 <select 
                     name="cont" 
@@ -123,7 +123,7 @@ const FormCard = () => {
                 </select>
             </label>
 
-            <button type="submit">Submit</button>
+            <button className='col-span-2 mt-2 py-4 p-2  shrink bg-blue-700 text-white font-bold rounded-lg  md:col-span-1 md:m-0 md:ml-2 lg:w-40' type="submit">Submit</button>
         </div>
           
       </form>

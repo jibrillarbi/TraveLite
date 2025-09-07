@@ -10,8 +10,8 @@ function Wrapper({ children }) {
   };
   return (
     
-    <div className="min-h-screen ">
-      <div className="flex flex-col gap-8 bg-sky-400 min-h-screen font-inter">
+    <div className="min-h-screen w-full ">
+      <div className="flex flex-col bg-sky-400 min-h-screen font-inter">
 
             <div className="page-container flex flex-col p-4 box-border ">
                 <header className="flex flex-col sm:flex-row justify-between items-center p-4">
@@ -25,7 +25,7 @@ function Wrapper({ children }) {
                     </div>
                 </header>
                 
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-8 leading-tight px-2">
+                <h2 className="text-3xl sm:text-4xl text-center sm:text-left font-extrabold text-white mb-8 px-2">
                     Where will the weather take you?
                 </h2>
                 <FormCard />
